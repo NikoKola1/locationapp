@@ -3,6 +3,7 @@
 //updates LocationList after pressin button
 import React from "react";
 import { View, Text, Button } from "react-native";
+import CustomButton from "./AddLocButton";
 
 export default function AddLocForm() {
   return (
