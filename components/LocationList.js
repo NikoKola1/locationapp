@@ -4,20 +4,24 @@
 import { fetchLocations } from "../firebase/FirestoreController";
 import React, { useState, useEffect } from "react";
 import { View, Text, Button, FlatList, StyleSheet, TouchableOpacity } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import CustomButton from "./AddLocButton";
+import { StarRatingDisplay } from "react-native-star-rating-widget";
 
 export default function LocationList({ navigation }) {
   
   const [locations, setLocations] = useState([]);
 
   //fetch locations from firestore when component loads
-  useEffect(() => {
-    const loadLocations = async () => {
-      const data = await fetchLocations();
-      setLocations(data);
-    };
-    loadLocations();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      const loadLocations = async () => {
+        const data = await fetchLocations();
+        setLocations(data);
+      };
+      loadLocations();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
@@ -34,7 +38,7 @@ export default function LocationList({ navigation }) {
           <View style={styles.locationItem}>
             <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.description}>{item.description}</Text>
-            <Text style={styles.rating}>⭐ {item.rating} / 5</Text>
+            <StarRatingDisplay rating={item.rating} />
           </View>
         )}
       />
@@ -58,7 +62,6 @@ const styles = StyleSheet.create({
   
   name: { fontSize: 18, fontWeight: "bold", paddingBottom:20 },
   description: { fontSize: 14, color: "#555", marginBottom: 5  },
-  rating: { fontSize: 16, fontWeight: "bold", color: "#FFD700"  },
 });
 
 
