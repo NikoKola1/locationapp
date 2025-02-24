@@ -38,9 +38,9 @@ export default function AddLocForm() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}> Add new location</Text>
-      <TextInput style={styles.input} placeholder="Name" value={name} onChangeText={setName}></TextInput>
-      <TextInput style={styles.input} placeholder="Description" value={description} onChangeText={setDescription}></TextInput>
+      <Text style={styles.heading}> Add Location</Text>
+      <TextInput style={styles.input} placeholder="Name" value={name} onChangeText={setName}/>
+      <TextInput style={styles.input} placeholder="Description" value={description} onChangeText={setDescription}/>
       <View style={styles.ratingContainer}>
         <StarRating rating={rating} onChange={setRating} starSize={50}/>
       </View>
@@ -52,7 +52,7 @@ export default function AddLocForm() {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20 },
   heading: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
-  input: { borderWidth: 1, borderColor: "#black", padding: 10, marginBottom: 10 },
+  input: { borderWidth: 1, borderColor: "black", padding: 10, marginBottom: 10 },
 
   ratingContainer: { alignItems: "center", marginBottom: 10}
 });

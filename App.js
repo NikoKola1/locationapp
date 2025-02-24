@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
+//import { View, Text, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LocationList from "./components/LocationList";
@@ -14,7 +14,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Locations" component={LocationList} />
         <Stack.Screen name="Add Location" component={AddLocForm} />
-        <Stack.Screen name="Map View" component={MapViewScreen} />
+        <Stack.Screen name="MapView" component={MapViewScreen} /> 
       </Stack.Navigator>
     </NavigationContainer>
   );
