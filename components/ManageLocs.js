@@ -1,34 +1,37 @@
-//displays list of saved locations
-//fetch loc from firestore
-//click marker to go mapview
-import { fetchLocations } from "../firebase/FirestoreController";
-import React, { useState } from "react";
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
-import CustomButton from "./AddLocButton";
-import { StarRatingDisplay } from "react-native-star-rating-widget";
+import { fetchLocations, deleteLocation } from "../firebase/FirestoreController";
+import React, { useState,useEffect } from "react";
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from "react-native";
+//import CustomButton from "./AddLocButton";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function LocationList({ navigation }) {
+export default function ManageLocs({ navigation }) {
+    const [locations, setLocations] = useState([]);
   
-  const [locations, setLocations] = useState([]);
-
-  //fetch locations from firestore when component loads
-  useFocusEffect(
-    React.useCallback(() => {
+    //fetch locations from Firestore when component loads
+    useEffect(() => {
       const loadLocations = async () => {
         const data = await fetchLocations();
         setLocations(data);
       };
       loadLocations();
-    }, [])
-  );
+    }, []);
+  
+    //function to handle delete
+    const handleDelete = async (id) => {
+      Alert.alert("Delete location", "Do you want to delete this location?", [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete", onPress: async () => {
+            await deleteLocation(id);
+            setLocations((prev) => prev.filter((loc) => loc.id !== id));
+          },
+          style: "destructive",
+        },
+      ]);
+    };
 
   return (
     <View style={styles.container}>
-       
-      {/*button goest to Add location screen*/}
-      {/*<CustomButton title="Add new location" onPress={() => navigation.navigate("Add Location")}/>*/}
 
       {/*Location list that show loc name, description and star rating. And icon that takes user to map view by tapping it*/}
       <FlatList
@@ -40,10 +43,11 @@ export default function LocationList({ navigation }) {
             <View style={styles.locationInfo}>
               <Text style={styles.name}>{item.name}</Text>
               <Text style={styles.description}>{item.description}</Text>
-              <StarRatingDisplay rating={item.rating} />
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate("MapView", { locationName: item.name })}>
-                <Ionicons name="location-sharp" size={24} color="red" style={styles.markerIcon}/>
+            <TouchableOpacity onPress={() => handleDelete(item.id)}>
+              <View>
+                <Ionicons name="trash" size={24} color="red" style={styles.trashIcon}/>
+              </View>
             </TouchableOpacity>
           </View>
 
@@ -72,5 +76,3 @@ const styles = StyleSheet.create({
   name: { fontSize: 18, fontWeight: "bold", paddingBottom:20 }, //name of loc
   description: { fontSize: 14, color: "#555", marginBottom: 5  }, //description of loc
 });
-
-

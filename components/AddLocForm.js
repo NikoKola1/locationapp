@@ -2,11 +2,12 @@
 //add new location button to save firestore
 //updates LocationList after pressin button
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity} from "react-native";
 import CustomButton from "./AddLocButton";
 import { useNavigation } from "@react-navigation/native";
 import StarRating from "react-native-star-rating-widget";
 import { addLocation } from "../firebase/FirestoreController";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function AddLocForm() {
 
@@ -27,6 +28,11 @@ export default function AddLocForm() {
       //add new loc to firestore
       await addLocation(name, description, rating);
       console.log("Location added:", { name, description, rating });
+
+      //reset fields
+      setName("");
+      setDescription("");
+      setRating("");
   
       //navigate back to loclist
       navigation.goBack();
@@ -37,8 +43,8 @@ export default function AddLocForm() {
   };
 
   return (
+ 
     <View style={styles.container}>
-      <Text style={styles.heading}> Add Location</Text>
       <TextInput style={styles.input} placeholder="Name" value={name} onChangeText={setName}/>
       <TextInput style={styles.input} placeholder="Description" value={description} onChangeText={setDescription}/>
       <View style={styles.ratingContainer}>
@@ -51,7 +57,9 @@ export default function AddLocForm() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20 },
-  heading: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "center", marginBottom: 10},
+  backButton: { position: "absolute", left: 0},
+  heading: { fontSize: 20, fontWeight: "bold"},
   input: { borderWidth: 1, borderColor: "black", padding: 10, marginBottom: 10 },
 
   ratingContainer: { alignItems: "center", marginBottom: 10}

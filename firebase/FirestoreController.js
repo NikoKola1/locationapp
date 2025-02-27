@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { db } from "./Config";
 
 const LOCATIONS_COLLECTION = "locations";
@@ -32,5 +32,14 @@ export const fetchLocations = async () => {
   } catch (error) {
     console.error("Error fetching locations:", error);
     return [];
+  }
+};
+
+//Function to delete location from firestore
+export const deleteLocation = async (id) => {
+  try {
+    await deleteDoc(doc(db, LOCATIONS_COLLECTION, id));
+  } catch (error){
+    console.error("error deleting loc", error);
   }
 };

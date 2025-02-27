@@ -10,10 +10,9 @@ import { useRoute } from "@react-navigation/native";
 import * as Location from "expo-location";
 
 export default function MapViewScreen() {
-
   //access navigation parameters. Location name from LocationList. State to store coords
   const route = useRoute();
-  const locationName = String(route.params);
+  const { locationName } = route.params || {};
   const [coordinates, setCoordinates] = useState(null);
 
   //useEffect when LocationName change
